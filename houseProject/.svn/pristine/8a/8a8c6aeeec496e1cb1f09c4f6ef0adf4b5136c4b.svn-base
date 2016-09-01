@@ -1,0 +1,17 @@
+package com.ssdut.house.tools;
+
+import java.util.Map;
+
+import com.opensymphony.xwork2.ActionContext;
+import com.ssdut.house.entities.UserInfo;
+
+
+public class PublicMethod {
+	public static  UserInfo checkLogin(){
+		ActionContext actionContext = ActionContext.getContext();
+		Map<String,Object> session = actionContext.getSession();
+		
+		UserInfo user=(UserInfo) session.get("loginUser");
+		return user;
+	}
+}

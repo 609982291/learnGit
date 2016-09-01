@@ -1,0 +1,89 @@
+package com.ssdut.house.dao;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ssdut.house.entities.*;
+public class CaseDao extends BaseDao {
+	/**
+	 * 获取所有的案件
+	 * @return List
+	 */
+	public List<Case> getAllCases(){
+		utils.getConnection();
+		String sql="select * from case";
+		List<Case> list=null ;
+			try {
+				list=utils.findMoreRefResult(sql, null, Case.class);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				utils.releaseConn();
+			}			
+		return list;
+	}
+	/**
+	 * 根据案件的处理状态查询对应的案件
+	 * @param state
+	 * @return
+	 */
+	public List<Case> getCasesByState(String state){
+		utils.getConnection();
+		String sql="select * from case where caseState=?";
+		List<Object> params = new ArrayList<Object>();
+		params.add(state);//通过params为占位符赋值
+		List<Case> list=null ;
+			try {
+				list=utils.findMoreRefResult(sql, params, Case.class);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				utils.releaseConn();
+			}			
+		return list;
+	}
+    
+	/**
+	 * 根据id获取案件对象
+	 * @param id
+	 * @return
+	 */
+	public Case getModelById(String id){
+		utils.getConnection();
+		String sql="select * from case where id=?";
+		Case c = null;
+		List<Object> params=new ArrayList<Object>();
+		params.add(id);
+		try{
+			c=(Case) utils.findSimpleRefResult(sql, params, Case.class);
+		}catch(Exception e){
+			
+			e.printStackTrace();
+		}finally{
+			utils.releaseConn();
+		}	
+		return c;
+	}
+	
+	public boolean addModel(Case c){
+			String sql="insert into case"
+					+ "(id,caseTypeId,caseUserName,caseUserPhone,complaintDate,"
+					+ "companyName,companyPhone,caseContent)"
+					+ " values(?,?,?,?,?,?,?,?)";
+			List<Object> params=new ArrayList<Object>();
+			params.add(c.getId());
+			params.add(c.getCaseTypeId());params.add(c.getCaseUserName());
+			params.add(c.getCaseUserPhone());params.add(c.getComplaintDate());
+			params.add(c.getCompanyName());params.add(c.getCompanyPhone());
+			params.add(c.getCaseContent());
+			try{
+				return utils.updateByPreparedStatement(sql, params);
+			}catch(Exception e){	
+				e.printStackTrace();
+			}finally{
+				utils.releaseConn();
+			}
+			return false;
+	}
+}

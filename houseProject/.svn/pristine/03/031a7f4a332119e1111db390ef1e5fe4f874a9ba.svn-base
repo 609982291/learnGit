@@ -1,0 +1,109 @@
+package com.ssdut.house.actions;
+
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.struts2.interceptor.RequestAware;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+import com.ssdut.house.dao.CaseDao;
+import com.ssdut.house.dao.DictionaryDao;
+import com.ssdut.house.entities.Case;
+import com.ssdut.house.entities.Dictionary;
+import com.ssdut.house.tools.createUUIDUtils;
+
+public class XfdjAction extends ActionSupport implements ModelDriven<Case>,
+		RequestAware,Preparable {
+
+	private static final long serialVersionUID = 1L;
+
+	private String id;//URL 中查询参数，case的主键id，由struts2 自己赋值
+	private CaseDao caseDao = new CaseDao();
+
+	private DictionaryDao dictionaryDao = new DictionaryDao();
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	private InputStream inputStream;//用于ajax后台向前台传输数据的输入流，由struts2自己初始化
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	private Map<String, Object> requestMap;//相当于request
+
+	@Override
+	public void setRequest(Map<String, Object> arg0) {
+		// TODO Auto-generated method stub
+		requestMap = arg0;
+	}
+	public void prepareSave(){
+		
+		if(id == null||"".equals(id)){
+			System.out.println("prepareSave model==null");
+			model = new Case();
+		}else{
+			System.out.println("prepareSave model!=null  id="+id);
+			model = caseDao.getModelById(id);
+		}
+	}
+	/**
+	 * save action 对应的响应函数
+	 * @return
+	 */
+	public String save() {
+		// System.out.println("caseUserName---"+senderName);
+		System.out.println("case---->" + model.getCaseUserName());
+		if("".equals(id)||id==null){
+			//新增
+			model.setId((new createUUIDUtils()).uuid);
+			model.setCaseState("已录入");
+			caseDao.addModel(model);
+			System.out.println("新增");
+		}else{
+			model.setId(id);
+			caseDao.updateModel(model);
+			System.out.println("更新");
+		}
+		System.out.println("model.id---->" + model.getId());
+		return "save";
+	}
+	
+	public void prepareInput() {
+		System.out.println("prepareInput id="+id);
+		if(id!=null&&!"".equals(id)){
+			model = caseDao.getModelById(id);
+		}
+	}
+	/**
+	 * input action对应的响应函数
+	 */
+	public String input() {
+		List<Dictionary> list = dictionaryDao.getDataByType("投诉形式");
+		list.add(0, new Dictionary("0", "---请选择---", ""));
+		System.out.println(list);
+		requestMap.put("tsxsList", list);
+		return INPUT;
+	}
+
+	private Case model;
+
+	@Override
+	public Case getModel() {
+		// TODO Auto-generated method stub
+		
+		
+		return model;
+	}
+	@Override
+	public void prepare() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

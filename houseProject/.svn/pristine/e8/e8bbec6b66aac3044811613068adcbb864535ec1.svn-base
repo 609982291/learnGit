@@ -1,0 +1,12 @@
+package com.ssdut.house.tools;
+
+import java.util.UUID;
+
+/**
+ * 产生UUID的类
+ * @author admin
+ *
+ */
+public class createUUIDUtils {
+	public static String uuid = UUID.randomUUID().toString();
+}

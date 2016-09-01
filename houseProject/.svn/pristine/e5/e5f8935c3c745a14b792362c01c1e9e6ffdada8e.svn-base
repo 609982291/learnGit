@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.multipart.maxSize" value="55000000" />
+
+	<package name="default" namespace="/" extends="struts-default">
+
+		<!-- 定义新的拦截器栈, 配置 prepare 拦截器栈的 alwaysInvokePrepare 参数值为 false -->
+		<interceptors>
+			<interceptor-stack name="sshStack">
+				<interceptor-ref name="paramsPrepareParamsStack">
+					<param name="prepare.alwaysInvokePrepare">false</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- 使用新的拦截器栈 -->
+		<default-interceptor-ref name="sshStack"></default-interceptor-ref>
+		<action name="dept-*" class="com.ssdut.house.actions.DepartmentAction"
+			method="{1}">
+			<result type="stream" name="ajax-success">
+				<param name="contentType">text/html</param>
+				<param name="inputName">inputStream</param>
+			</result>
+			<result name="{1}">/WEB-INF/views/dept-{1}.jsp</result>
+			<result name="success" type="redirectAction">/WEB-INF/views/dept-list</result>
+			<result name="index">/WEB-INF/views/main.html</result>
+		</action>
+		<action name="xfdj-*" class="com.ssdut.house.actions.XfdjAction"
+			method="{1}">
+			<result type="stream" name="ajax-success">
+				<param name="contentType">text/html</param>
+				<param name="inputName">inputStream</param>
+			</result>
+			<result name="input">/xfdj.jsp</result>
+			<result name="save" type="redirect">xfdj-input</result>
+
+		</action>
+		<!-- 业务受理的action -->
+		<action name="ywsl-*" class="com.ssdut.house.actions.YwslAction"
+			method="{1}">
+			<result type="stream" name="ajax-success">
+				<param name="contentType">text/html</param>
+				<param name="inputName">inputStream</param>
+			</result>
+
+			<result name="list">/ywsl.jsp</result>
+			<result name="handle" type="redirect">ywsl-list</result>
+		</action>
+		<!-- 主任受理的action -->
+		<action name="ywslzhuren-*" class="com.ssdut.house.actions.ywslzhurenAction"
+			method="{1}">
+			<result type="stream" name="ajax-success">
+				<param name="contentType">text/html</param>
+				<param name="inputName">inputStream</param>
+			</result>
+
+			<result name="list">/ywsl-zhuren.jsp</result>
+			<result name="handle" type="redirect">ywslzhuren-list</result>
+		</action>
+		<!-- 法制科业务督办的action -->
+		<action name="ywdb-*" class="com.ssdut.house.actions.YwdbAction"
+			method="{1}">
+			<result type="stream" name="ajax-success">
+				<param name="contentType">text/html</param>
+				<param name="inputName">inputStream</param>
+			</result>
+
+			<result name="list">/ywdb.jsp</result>
+			<result name="tohandle">/ywdb-handle.jsp</result>
+			<result name="handle" type="redirect">ywdb-list</result>
+			<result name="reject" type="redirect">ywdb-list</result>
+		</action>
+		<action name="ajfp-*" class="com.ssdut.house.actions.AjfpAction"
+			method="{1}">
+			<result type="stream" name="ajax-success">
+				<param name="contentType">text/html</param>
+				<param name="inputName">inputStream</param>
+			</result>
+
+			<result name="list">/ajfp.jsp</result>
+			<result name="todispatch">/ajfp-dispatch.jsp</result>
+			<result name="dispatch" type="redirect">ajfp-list</result>
+
+
+		</action>
+
+		<action name="upload" class="com.ssdut.house.actions.UploadAction">
+			<result>/success.jsp</result>
+			<interceptor-ref name="fileUpload">
+				<param name="savePath">/data</param>
+				<param name="maximumSize">52428800</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+
+		</action>
+	</package>
+
+	<!-- Add packages here -->
+
+</struts>

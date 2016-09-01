@@ -1,0 +1,87 @@
+package com.ssdut.house.actions;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.struts2.interceptor.RequestAware;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
+import com.ssdut.house.dao.CaseDao;
+import com.ssdut.house.dao.DictionaryDao;
+import com.ssdut.house.dao.PageBeanDao;
+import com.ssdut.house.entities.Case;
+import com.ssdut.house.entities.Dictionary;
+import com.ssdut.house.entities.PageBean;
+import com.ssdut.house.entities.Xfdj;
+import com.ssdut.house.tools.createUUIDUtils;
+
+public class XfdjAction extends ActionSupport implements ModelDriven<Case>, RequestAware{
+
+	private static final long serialVersionUID = 1L;
+
+	private String id;
+	private CaseDao caseDao=new CaseDao();
+
+	private DictionaryDao dictionaryDao=new DictionaryDao();
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	private InputStream inputStream;
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+	private Map<String, Object> requestMap;
+	
+	@Override
+	public void setRequest(Map<String, Object> arg0) {
+		// TODO Auto-generated method stub
+		requestMap=arg0;
+	}
+	
+	
+	
+	public String save(){
+		//System.out.println("caseUserName---"+senderName);
+		System.out.println("case---->"+model.getCaseUserName());
+		model.setId((new createUUIDUtils()).uuid);
+		System.out.println("model.id---->"+model.getId());
+		caseDao.addModel(model);
+		return "save";
+	}
+	public void prepareInput(){
+		
+	}
+	public String input(){
+		List<Dictionary> list=dictionaryDao.getDataByType("投诉形式");
+		list.add(0,new Dictionary("0","---请选择---",""));
+		System.out.println(list);
+		requestMap.put("tsxsList",list);
+		return INPUT;
+	}
+	
+	private Case model;
+	@Override
+	public Case getModel() {
+		// TODO Auto-generated method stub
+		
+		System.out.println("getmodel");
+		
+		if(id==null){
+			model=new Case();
+		}else{
+			model=caseDao.getModelById(id);
+		}
+		return model;
+	}
+	
+}

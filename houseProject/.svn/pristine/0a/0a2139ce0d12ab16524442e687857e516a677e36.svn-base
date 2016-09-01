@@ -1,0 +1,84 @@
+package com.ssdut.house.actions;
+
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.struts2.interceptor.RequestAware;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
+import com.ssdut.house.dao.CaseDao;
+import com.ssdut.house.dao.DictionaryDao;
+import com.ssdut.house.entities.Case;
+import com.ssdut.house.entities.Dictionary;
+import com.ssdut.house.entities.Xfdj;
+import com.ssdut.house.tools.createUUIDUtils;
+
+public class XfdjAction extends ActionSupport implements ModelDriven<Case>, RequestAware{
+
+	private static final long serialVersionUID = 1L;
+	private int page;
+	private String id;
+	private CaseDao caseDao=new CaseDao();
+	private String selectIndex;
+	private String senderName;
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
+	}
+	public void setSelectIndex(String selectIndex) {
+		this.selectIndex = selectIndex;
+	}
+	private DictionaryDao dictionaryDao=new DictionaryDao();
+	public void setId(String id) {
+		this.id = id;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	private InputStream inputStream;
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+	private Map<String, Object> requestMap;
+	@Override
+	public void setRequest(Map<String, Object> arg0) {
+		// TODO Auto-generated method stub
+		requestMap=arg0;
+	}
+	
+	
+	public void prepareSave(){
+		
+	}
+	public String save(){
+		//System.out.println("caseUserName---"+senderName);
+		System.out.println("case---->"+model.getCaseUserName()); 
+		
+		model.setId(createUUIDUtils.uuid);
+		caseDao.addModel(model);
+		return "save";
+	}
+	public void prepareInput(){
+		if(id != null){
+			//model = caseDao.getModelById(id);
+		}
+	}
+	public String input(){
+		List<Dictionary> list=dictionaryDao.getDataByType("投诉形式");
+		
+		System.out.println(list);
+		requestMap.put("tsxsList",list);
+		return INPUT;
+	}
+	private Case model;
+	@Override
+	public Case getModel() {
+		// TODO Auto-generated method stub
+		if(id==null){
+			model=new Case();
+		}
+		return model;
+	}
+}

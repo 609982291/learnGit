@@ -1,0 +1,8 @@
+database_user=dev
+database_password=dev
+driver_class=com.microsoft.sqlserver.jdbc.SQLServerDriver
+driver_url=jdbc:sqlserver://10.33.250.182:1433; DatabaseName=houseProperty
+
+jdbc.initPoolSize=5
+jdbc.maxPoolSize=10
+#...

@@ -1,0 +1,173 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Insert title here</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".click").click(function() {
+			window.location.href="xfdj.html"; 
+		});
+
+		$(".tablelink").click(function() {
+			$(".tip").fadeIn(200);
+		});
+
+		$(".tiptop a").click(function() {
+			$(".tip").fadeOut(200);
+		});
+
+		$(".sure").click(function() {
+			$(".tip").fadeOut(100);
+		});
+
+		$(".cancel").click(function() {
+			$(".tip").fadeOut(100);
+		});
+
+	});
+</script>
+</head>
+<body>
+	<div class="place">
+		<span>位置：</span>
+		<ul class="placeul">
+			<li><a href="#">首页</a></li>
+			<li><a href="#">投诉受理</a></li>
+		</ul>
+	</div>
+
+	<div class="rightinfo">
+
+		<div class="tools">
+
+			<ul class="toolbar">
+				<li class="click"><span><img src="images/t01.png" /></span>添加</li>
+			</ul>
+
+
+		</div>
+
+
+		<table class="tablelist">
+			<thead>
+				<tr>
+					<th>投诉时间<i class="sort"><img src="images/px.gif" /></i></th>
+					<th>投诉人姓名</th>
+					<th>投诉人电话</th>
+					<th>被投诉单位</th>
+					<th>单位电话</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>2015-09-01</td>
+					<td>张无忌</td>
+					<td>13355221818</td>
+					<td>奥莱物业集团公司</td>
+					<td>0322-5523887</td>
+					<td><a href="#" class="tablelink">受理</a>&nbsp;&nbsp; <a
+						href="#" class="tablelinkdelete">删除</a></td>
+				</tr>
+				<tr>
+					<td>2015-07-01</td>
+					<td>风清扬</td>
+					<td>13122334456</td>
+					<td>万达物业有限公司</td>
+					<td>0323-4433226</td>
+					<td><a href="#" class="tablelink">受理</a>&nbsp;&nbsp; <a
+						href="#" class="tablelinkdelete">删除</a></td>
+				</tr>
+				<tr>
+					<td>2014-12-12</td>
+					<td>刘三刀</td>
+					<td>18877665424</td>
+					<td>创战纪物业公司</td>
+					<td>0421-3354332</td>
+					<td><a href="#" class="tablelink">受理</a>&nbsp;&nbsp; <a
+						href="#" class="tablelinkdelete">删除</a></td>
+				</tr>
+				<tr>
+					<td>2014-11-21</td>
+					<td>伍豪</td>
+					<td>18855332987</td>
+					<td>常凯物业公司</td>
+					<td>0534-522334489</td>
+					<td><a href="#" class="tablelink">受理</a>&nbsp;&nbsp; <a
+						href="#" class="tablelink">删除</a></td>
+				</tr>
+				<tr>
+					<td>2014-04-24</td>
+					<td>毛任工</td>
+					<td>13512398876</td>
+					<td>文山物业保洁公司</td>
+					<td>0576-7744392</td>
+					<td><a href="#" class="tablelink">受理</a>&nbsp;&nbsp; <a
+						href="#" class="tablelink">删除</a></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+		<div class="pagin">
+			<div class="message">
+				共<i class="blue">1256</i>条记录，当前显示第&nbsp;<i class="blue">2&nbsp;</i>页
+			</div>
+			<ul class="paginList">
+				<li class="paginItem"><a href="javascript:;"><span
+						class="pagepre"></span></a></li>
+				<li class="paginItem"><a href="javascript:;">1</a></li>
+				<li class="paginItem current"><a href="javascript:;">2</a></li>
+				<li class="paginItem"><a href="javascript:;">3</a></li>
+				<li class="paginItem"><a href="javascript:;">4</a></li>
+				<li class="paginItem"><a href="javascript:;">5</a></li>
+				<li class="paginItem more"><a href="javascript:;">...</a></li>
+				<li class="paginItem"><a href="javascript:;">10</a></li>
+				<li class="paginItem"><a href="javascript:;"><span
+						class="pagenxt"></span></a></li>
+			</ul>
+		</div>
+
+
+		<div class="tip">
+			<div class="tiptop">
+				<span>受理投诉</span><a></a>
+			</div>
+
+			<div class="tipinfo">
+				<ul class="forminfo">
+					<li><label>受理人<b>*</b></label>
+						<div class="cityleft">
+							<input name="senderPhone" type="text" class="scinput" />
+							&nbsp;&nbsp;&nbsp;
+						</div></li>
+					<li><label>受理单位<b>*</b></label>
+						<div class="cityright">
+							<input name="sendDate" type="text" class="scinput"/>
+						</div></li>
+				</ul>
+			</div>
+
+			<div class="tipbtn">
+				<input name="" type="button" class="sure" value="确定" />&nbsp; <input
+					name="" type="button" class="cancel" value="取消" />
+			</div>
+
+		</div>
+
+
+
+
+	</div>
+
+	<script type="text/javascript">
+		$('.tablelist tbody tr:odd').addClass('odd');
+	</script>
+</body>
+</html>

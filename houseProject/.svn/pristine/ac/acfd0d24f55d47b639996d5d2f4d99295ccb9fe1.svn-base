@@ -1,0 +1,206 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<style type="text/css">
+.zindexClass{
+z-index: 222222;
+}
+</style>
+<script type="text/javascript">
+	$(document).ready(
+			function() {
+				$(".click").click(function() {
+					window.location.href = "xfdj-input";
+				});
+
+				$(".tablelink").click(
+						function() {
+							document.getElementById("caseID").value = $(this).next(":hidden").val();
+							$(".tip").fadeIn(200);
+						});
+
+				$(".tiptop a").click(function() {
+					$(".tip").fadeOut(200);
+				});
+
+				
+
+				$(".cancel").click(function() {
+					$(".tip").fadeOut(100);
+				});
+
+			});
+</script>
+<script src="js/My97DatePicker/WdatePicker.js"></script>
+</head>
+<body>
+
+	<div class="place">
+		<span>位置：</span>
+		<ul class="placeul">
+			<li><a href="#">首页</a></li>
+			<li><a href="#">业务受理</a></li>
+		</ul>
+	</div>
+
+	<div class="rightinfo">
+
+		<div class="tools">
+
+			<ul class="toolbar">
+				<li class="click"><span><img src="images/t01.png" /></span>添加</li>
+			</ul>
+
+
+		</div>
+		<s:if test="#request.finishPageBean==null||#request.finishPageBean.list.size==0">
+		没有任何信息
+		</s:if>
+		<s:else>
+
+			<table class="tablelist">
+				<thead>
+					<tr>
+						<th>投诉时间<i class="sort"><img src="images/px.gif" /></i></th>
+						<th>投诉人姓名</th>
+						<th>投诉人电话</th>
+						<th>被投诉单位</th>
+						<th>单位电话</th>
+						<th>状态</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<s:iterator value="#request.finishPageBean.list">
+						<tr>
+							<td>${complaintDate}</td>
+							<td>${caseUserName}</td>
+							<td>${caseUserPhone}</td>
+							<td>${companyName }</td>
+							<td>${companyPhone}</td>
+							<td><input name="caseState" value="${caseState }"
+								type="text" /></td>
+							<td><a
+								href="#" class="tablelink">结案</a> <input type="hidden"
+								value="${id }" /></td>
+						</tr>
+					</s:iterator>
+				</tbody>
+			</table>
+		</s:else>
+
+		<div class="pagin">
+			<div class="message">
+				共<i class="blue"><s:property value="#request.finishPageBean.allRows" /></i>条记录，当前显示第&nbsp;<i
+					class="blue"><s:property
+						value="#request.finishPageBean.currentPage+1" />&nbsp;</i>页
+			</div>
+			<ul class="paginList">
+				<li class="paginItem"><s:if
+						test="#request.finishPageBean.currentPage == 0">
+						<a href="javascript:;">首页</a>
+					</s:if> <s:else>
+						<a href="finish-list">首页</a>
+
+					</s:else></li>
+
+
+
+				<li class="paginItem"><s:if
+						test="#request.finishPageBean.currentPage == 0">
+						<a href="javascript:;">上一页</a>
+					</s:if> <s:else>
+						<a
+							href="finish-list?page=<s:property value="#request.finishPageBean.currentPage - 1"/>">上一页</a>
+					</s:else></li>
+
+
+
+				<li class="paginItem"><s:if
+						test="#request.finishPageBean.currentPage != #request.finishPageBean.totalPage-1">
+						<a
+							href="finish-list?page=<s:property value="#request.finishPageBean.currentPage + 1"/>">下一页</a>
+
+
+					</s:if> <s:else>
+						<a href="javascript:;">下一页</a>
+					</s:else></li>
+
+				<li class="paginItem"><s:if
+						test="#request.finishPageBean.currentPage != #request.finishPageBean.totalPage-1">
+						<a
+							href="finish-list.action?page=<s:property value="#request.finishPageBean.totalPage-1"/>">尾页</a>
+					</s:if> <s:else>
+						<a href="javascript:;">尾页</a>
+					</s:else></li>
+				<li class="paginItem" style=""><s:form name="finish-list?flag=go">
+						<s:label value="跳转到"></s:label>
+						<s:textfield value="" name="page" id="pageId"></s:textfield>
+						<s:label value="页"></s:label>
+						<s:submit onclick="return goPage()"></s:submit>
+						<script type="text/javascript">
+							function goPage() {
+								var pageIndex = document
+										.getElementById("pageId").value;//跳转页码
+								if (isNaN(pageIndex)) {
+									alert("输入的页码无效12");
+									return false;
+								}
+								var totalPage = <s:property value="#request.finishPageBean.totalPage"/>;//总页码
+								if (pageIndex<=0||pageIndex>totalPage) {
+									alert("输入的页码无效");
+									return false;
+								}
+								document.getElementById("pageId").value = pageIndex - 1;
+							}
+						</script>
+					</s:form></li>
+
+
+			</ul>
+		</div>
+
+
+		<div class="tip">
+
+			<div class="tiptop">
+				<span>受理投诉</span><a></a>
+
+			</div>
+			<s:form action="finish-finish" method="post" theme="simple">
+				<s:hidden name="id" id="caseID"></s:hidden>
+				<div class="tipinfo">
+					<ul class="forminfo">
+						<li><label>结案意见<b>*</b></label>
+							<div class="cityleft">
+								<s:textfield name="leaderOp" type="text" class="scinput" />
+								&nbsp;&nbsp;&nbsp;
+							</div></li>
+						<li><label>结案时间<b>*</b></label>
+							<div class="cityright">
+								<s:textfield name="finishDate" theme="simple" onclick="WdatePicker('yyyyMMdd')" type="text" class="scinput " />
+							</div></li>
+
+					</ul>
+				</div>
+
+				<div class="tipbtn">
+					<s:submit class="sure" value="确定" />
+					&nbsp; <input name="" type="button" class="cancel" value="取消" />
+				</div>
+			</s:form>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$('.tablelist tbody tr:odd').addClass('odd');
+	</script>
+</body>
+</html>

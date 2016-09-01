@@ -1,0 +1,7 @@
+package com.ssdut.house.dao;
+
+import com.ssdut.house.tools.JDBCUtils;
+
+public class BaseDao {
+	public static JDBCUtils utils=new JDBCUtils();
+}
